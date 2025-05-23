@@ -12,35 +12,41 @@ with open("fixtures/london_response.json", "r") as response, open(
 
 
 @pytest.mark.asyncio
-@patch("app.geocoding.load_envs", return_value=("http://mock-url", "mock-api-key"))
+@patch(
+    "app.geocoding.load_url_and_api_key",
+    return_value=("http://mock-url", "mock-api-key"),
+)
 @patch("httpx.AsyncClient.get")
-async def test_get_coordinates_success(mock_http_get, mock_load_envs):
+async def test_get_coordinates_success(mock_http_get, mock_load_url_and_api_key):
     mock_response = MagicMock()
     mock_response.raise_for_status.return_value = None
     mock_response.json.return_value = london_fixture
     mock_http_get.return_value = mock_response
 
     controller = GeocodingController()
-    result = await controller.get_coordinates("London")
+    result = await controller.get_coordinates(["london"])
 
     assert result == london_expected
     mock_http_get.assert_called_once_with(
-        "http://mock-url", params={"key": "mock-api-key", "address": "London"}
+        "http://mock-url", params={"key": "mock-api-key", "address": "london"}
     )
 
 
 @pytest.mark.asyncio
-@patch("app.geocoding.load_envs", return_value=("http://mock-url", "mock-api-key"))
+@patch(
+    "app.geocoding.load_url_and_api_key",
+    return_value=("http://mock-url", "mock-api-key"),
+)
 @patch("httpx.AsyncClient.get")
-async def test_get_coordinates_empty_results(mock_http_get, mock_load_envs):
+async def test_get_coordinates_empty_results(mock_http_get, mock_load_url_and_api_key):
     mock_response = MagicMock()
     mock_response.raise_for_status.return_value = None
-    mock_response.json.return_value = {}
+    mock_response.json.return_value = {"results": []}
     mock_http_get.return_value = mock_response
 
     controller = GeocodingController()
 
-    with pytest.raises(KeyError) as exc_info:
-        await controller.get_coordinates("The Void")
+    result = await controller.get_coordinates(["The Void"])
 
-    assert str(exc_info.value) == "'results'"
+    expected = [{}]
+    assert result == expected

@@ -1,7 +1,7 @@
 import os
 
 
-def load_envs() -> tuple[str, str]:
+def load_url_and_api_key() -> tuple[str, str]:
     url = os.getenv("GEOCODING_URL")
     api_key = os.getenv("GEOCODING_API_KEY")
     if not url or not api_key:

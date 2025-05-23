@@ -1,18 +1,27 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.geocoding import GeocodingController
 
 app = FastAPI()
 geocoding_controller = GeocodingController()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class GeocodeRequest(BaseModel):
-    location: str
+    locations: list[str]
 
 
-@app.post("/encode/")
+@app.post("/encode")
 async def encode(request_data: GeocodeRequest):
-    response = await geocoding_controller.get_coordinates(request_data.location)
+    response = await geocoding_controller.get_coordinates(request_data.locations)
 
     return {"results": response}

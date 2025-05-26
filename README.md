@@ -9,13 +9,13 @@ Simple FastAPI project that handles requests to google's Geocoding API.
 
 ## Usage
 
-Send `post` requests at `http://localhost:8000/encode` with a `location` argument. Example:
+Send `post` requests at `http://localhost:8000/encode` with a `locations` argument. Example:
 
 ```
 curl --location --request POST 'http://localhost:8000/encode' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "location": "new york city"
+    "locations": ["new york city"]
 }'
 ```
 

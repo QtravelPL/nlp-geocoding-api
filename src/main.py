@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.geocoding import GeocodingController
+from src.geocoding import GeocodingController
 
 app = FastAPI()
 geocoding_controller = GeocodingController()

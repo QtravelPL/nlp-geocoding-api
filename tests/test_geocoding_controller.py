@@ -2,7 +2,7 @@ import json
 import pytest
 from unittest.mock import patch, MagicMock
 
-from app.geocoding import GeocodingController
+from src.geocoding import GeocodingController
 
 with open("fixtures/london_response.json", "r") as response, open(
     "fixtures/london_expected.json", "r"
@@ -13,7 +13,7 @@ with open("fixtures/london_response.json", "r") as response, open(
 
 @pytest.mark.asyncio
 @patch(
-    "app.geocoding.load_url_and_api_key",
+    "src.geocoding.load_url_and_api_key",
     return_value=("http://mock-url", "mock-api-key"),
 )
 @patch("httpx.AsyncClient.get")
@@ -34,7 +34,7 @@ async def test_get_coordinates_success(mock_http_get, mock_load_url_and_api_key)
 
 @pytest.mark.asyncio
 @patch(
-    "app.geocoding.load_url_and_api_key",
+    "src.geocoding.load_url_and_api_key",
     return_value=("http://mock-url", "mock-api-key"),
 )
 @patch("httpx.AsyncClient.get")

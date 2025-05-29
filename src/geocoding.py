@@ -1,7 +1,7 @@
 import httpx
 import asyncio
 
-from app.config import load_url_and_api_key
+from src.config import load_url_and_api_key
 
 
 class GeocodingController:

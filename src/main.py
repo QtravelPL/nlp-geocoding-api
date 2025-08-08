@@ -17,7 +17,7 @@ app.add_middleware(
 
 
 class GeocodeRequest(BaseModel):
-    locations: list[str]
+    locations: list[list[str]]
 
 
 @app.post("/encode")

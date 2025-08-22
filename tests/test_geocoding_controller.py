@@ -24,7 +24,7 @@ async def test_get_coordinates_success(mock_http_get, mock_load_url_and_api_key)
     mock_http_get.return_value = mock_response
 
     controller = GeocodingController()
-    result = await controller.get_coordinates(["london"])
+    result = await controller.get_coordinates([["london"]])
 
     assert result == london_expected
     mock_http_get.assert_called_once_with(
@@ -46,7 +46,7 @@ async def test_get_coordinates_empty_results(mock_http_get, mock_load_url_and_ap
 
     controller = GeocodingController()
 
-    result = await controller.get_coordinates(["The Void"])
+    result = await controller.get_coordinates([["The Void"]])
 
-    expected = [{}]
+    expected = [[{}]]
     assert result == expected

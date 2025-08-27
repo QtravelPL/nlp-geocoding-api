@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/app
     networks:
-      - redis-net
+      - geocoding_net
     depends_on:
       - redis
 
@@ -19,9 +19,10 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - redis-net
+      - geocoding_net
     volumes:
-      - cache:/data
+      - geocoding-cache:/data
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "2gb", "--maxmemory-policy", "allkeys-lfu"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s
@@ -29,8 +30,8 @@ services:
       retries: 3
 
 networks:
-  redis-net:
-    name: redis-net
+  geocoding_net:
+    name: geocoding_net
 
 volumes:
-  cache:
+  geocoding-cache:
